@@ -4,41 +4,42 @@ var bounce = 30; // size of non overlapping part
 var xcoord = 300; // where first set of balls arrive
 var ycoord = 300; // where first set of balls arrive
 var colour = 128; // first colour 
-var ballArray = [];//文字块临时存储
-var colorValue = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";//颜色值基础定义
-var colorArray = colorValue.split(",");//将颜色值基础数据转为数组
+var ballArray = [];//Temporary storage of text blocks
+var colorValue = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";//Color value  definition
+var colorArray = colorValue.split(",");//Convert color value to an array
 
-//开始执行创建画布入口
+//Start executing creating a canvas entrance
 function setup() {
-	//创建画布
+	//create a canvas 
 	createCanvas(800, 800);
 }
 
-//鼠标释放执行事件入口
+//the entrance of the event of mouse release
 function mouseReleased() {
-	noLoop();//停止绘画
+	noLoop();//stop painting
 }
 
-//鼠标开始触发准备执行重新绘画
+//prepare for repainting
 function mousePressed() {
-	loop();//重新执行绘画
+	loop();//prepare for repainting
 }
 
-//p5 js 开始执行绘画
+//p5 js start painting
 function draw() {
-	//判断鼠标已经按下时执行添加文字块
+	//add text blocks when mouse pressed
 	if (mouseIsPressed) {
-		xcoord = mouseX;//获取X坐标
-		ycoord = mouseY;//获取Y坐标
-		ballArray.push(new ball());//累加文字块到临时数组
+		xcoord = mouseX;//get the X coordinate
+		ycoord = mouseY;//get the Y coordinate
+		ballArray.push(new ball());//add text blocks into temporary arrays
+
 	}
 
-	//循环文字块内容，动态显示到计算出的坐标位置
+	//Loop the content of text block,  display it dynamically to the calculated coordinate position
 	for (var i = 0; i < ballArray.length; i++) {
 		for (var j = 0; j < i; j++) {
-			var distance = dist(ballArray[i].x, ballArray[i].y, ballArray[j].x, ballArray[j].y);//根据每个文字块的坐标值计算得出两点之前的距离
+			var distance = dist(ballArray[i].x, ballArray[i].y, ballArray[j].x, ballArray[j].y);//calculate the distance between two points based on the coordinate values of each block of text
 			
-			//当两点之间距离小于定义的基础尺寸时，重新给文字块计算坐标位置并赋值
+			//Recalculate the coordinate position of the text block when the distance between the two points is less than the defined base size
 			if (distance < bounce) {
 				var dx = ballArray[i].x - ballArray[j].x;
 				var dy = ballArray[i].y - ballArray[j].y;
@@ -52,42 +53,42 @@ function draw() {
 		}
 	}
 
-	//循环取出文字块内容并显示
+	//Loop out the text block content and display
 	for (var i = 0; i < ballArray.length; i++) {
 		ballArray[i].display();
 	}
 }
 
 
-//创建文字块内容函数
+//Create a function of creating block content 
 function ball() {
 
-	//计算随机坐标位置
+	//Calculate the random coordinate position
 	this.x = xcoord + random(1, 2);
 	this.y = ycoord + random(1, 2);
 
 	this.display = function () {
 		//	var colorShift = 100*mag(this.fsumx, this.fsumy);
-		textSize(20);//设置文字大小
-		var color = getColor();//获取随机颜色值
-		fill(color);//填充文字颜色
-		text('opinion', this.x, this.y);//创建文字内容到画图上
+		textSize(20);//set the text size
+		var color = getColor();//get random color values
+		fill(color);//Fill text color
+		text('opinion', this.x, this.y);//Create text content onto the drawing
 		//ellipse(this.x, this.y, size, size);
 	};
 }
 
-//生成随机颜色值
+//Generate random color values
 function getColor() {
-	//定义字符串变量colorValue存放可以构成十六进制颜色值的值
+	//Define the string variable colorValue to store the value that can form a hexadecimal color value
 	var colorValue = "0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f";
-	//以","为分隔符，将colorValue字符串分割为字符数组["0","1",...,"f"]
+	//Split the colorValue string into a character array ["0","1",...,"f"] with "," as the separator
 	var colorArray = colorValue.split(",");
-	var color = "#"; //定义一个存放十六进制颜色值的字符串变量，先将#存放进去
-	//使用for循环语句生成剩余的六位十六进制值
+	var color = "#"; //Define a string variable that holds the hexadecimal color value, first store #
+	//Use the for loop statement to generate the remaining six hexadecimal values
 	for (var i = 0; i < 6; i++) {
-		//colorArray[Math.floor(Math.random()*16)]随机取出
-		// 由16个元素组成的colorArray的某一个值，然后将其加在color中，
-		//字符串相加后，得出的仍是字符串
+		//colorArray[Math.floor(Math.random()*16)]Randomly removed
+		// a value of a colorArray consisting of 16 elements, and then adding it to the color,
+		//after the string is added, the result is still a string.
 		color += colorArray[Math.floor(Math.random() * 16)];
 	}
 	return color;
